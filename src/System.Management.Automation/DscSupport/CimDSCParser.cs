@@ -714,7 +714,7 @@ namespace Microsoft.PowerShell.DesiredStateConfiguration.Internal
                 List<string> modulePaths = new List<string>();
                 if (modulePathList == null || modulePathList.Count == 0)
                 {
-                    modulePaths.Add(Path.Combine(Platform.GetFolderPath(Environment.SpecialFolder.System), InboxDscResourceModulePath));
+                    modulePaths.Add(Path.Combine(configSystemPath, inboxModulePath));
                     isInboxResource = true;
                 }
                 else
