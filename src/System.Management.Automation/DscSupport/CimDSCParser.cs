@@ -663,7 +663,17 @@ namespace Microsoft.PowerShell.DesiredStateConfiguration.Internal
             }
             else
             {
-                var systemResourceRoot = Path.Combine(Platform.GetFolderPath(Environment.SpecialFolder.System), "Configuration");
+                // DSC SxS scenario
+                var psAssembly = Assembly.GetEntryAssembly();
+                var configSystemPath = Path.GetDirectoryName(psAssembly.Location);
+                var systemResourceRoot = Path.Combine(configSystemPath, "Configuration");
+                var inboxModulePath = "Modules\\PSDesiredStateConfiguration";
+                if( !Directory.Exists(systemResourceRoot))
+                {
+                     configSystemPath = Platform.GetFolderPath(Environment.SpecialFolder.System);
+                     systemResourceRoot = Path.Combine(configSystemPath, "Configuration");
+                     inboxModulePath = InboxDscResourceModulePath;
+                }
                 var programFilesDirectory = Platform.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 Debug.Assert(programFilesDirectory != null, "Program Files environment variable does not exist!");
                 var customResourceRoot = Path.Combine(programFilesDirectory, "WindowsPowerShell\\Configuration");
